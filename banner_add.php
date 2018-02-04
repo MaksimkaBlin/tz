@@ -9,14 +9,12 @@ include "admin_header.php";
         <?php
         $bannerId = isset($_REQUEST['id']) ? $_REQUEST['id'] : null;
 
-        if (isset($_POST['do_post']))
-        {
+        if (isset($_POST['do_post'])) {
             $errors = array();
-            if (empty($_POST['name']))
-            {
+            if (empty(trim ($_POST['name']))) {
                 $errors[] = "Введите название баннера!";
             }
-            if (isset($_FILES["banner-img"])){
+            if (isset($_FILES["banner-img"])) {
                 $bannerImgTempName = $_FILES["banner-img"]["tmp_name"];
                 $bannerImgName = $_FILES["banner-img"]["name"];
                 $uploaddir = "./images/";
@@ -24,28 +22,23 @@ include "admin_header.php";
             } else {
                 $bannerImgName = "";
             }
-            if (empty($errors))
-            {
+            if (empty($errors)) {
                 $query = "";
-                if($bannerId) {
+                if ($bannerId) {
                     if (empty($bannerImgName)) {
-                        $query = "UPDATE banners SET title='".$_POST['name']."' WHERE id={$bannerId}";
+                        $query = "UPDATE banners SET title='" . $_POST['name'] . "' WHERE id={$bannerId}";
                     } else {
                         $query = "UPDATE banners SET title='" . $_POST['name'] . "', image='" . $bannerImgName . "'
                         WHERE id={$bannerId}";
                     }
-                    $message = "Баннер успешно обновлен <hr>";
                 } else {
-                    $query = "INSERT INTO banners (title, image) VALUES ('".$_POST['name']."','".$bannerImgName."')";
-                    $message = "Баннер успешно добавлен <hr>";
+                    $bannerImgName = !empty($bannerImgName) ? $bannerImgName : "default/default_banner.png";
+                    $query = "INSERT INTO banners (title, image) VALUES ('" . $_POST['name'] . "','" . $bannerImgName . "')";
                 }
                 mysqli_query($connection, $query);
-                echo $message;
                 header("Location:banners_page.php");
-
-            }else
-            {
-                if(isset ($errors)) {
+            } else {
+                if (isset ($errors)) {
                     foreach ($errors as $error) {
                         echo $error . "<br>";
                     }
@@ -69,14 +62,14 @@ include "admin_header.php";
                 if ($action == 'edit') {
                     ?>
                     <input type="hidden" name="id" value="<?php echo $bannerId; ?>">
-                <?php }?>
+                <?php } ?>
                 <?php
                 if ($action == 'edit') {
                     ?>
-                    <input class="form-control" type="text" name="name" value="<?php echo $bannerData['title']; ?>" >
-                <?php } else {?>
+                    <input class="form-control" type="text" name="name" value="<?php echo $bannerData['title']; ?>">
+                <?php } else { ?>
                     <input class="form-control" type="text" name="name">
-                <?php }?>
+                <?php } ?>
             </div>
         </div>
         <label>Изображение баннера
@@ -87,14 +80,16 @@ include "admin_header.php";
             <div class="row margin-bottom-200">
                 <img src="./images/<?php echo $bannerData['image']; ?>"
             </div>
-        <?php }?>
+        <?php } ?>
         <div class="row margin-bottom-20">
             <div class="col-md-7 col-md-offset-0">
                 <input class="form-control" type="file" name="banner-img">
             </div>
         </div>
         <p>
-            <button class="btn btn-primary" type="submit" name ="do_post">Отправить</button>
+            <button class="btn btn-primary" type="submit" name="do_post"><?php
+                include "submit_button_text.php";
+                ?></button>
         </p>
     </form>
     <!-- End Contact Form -->

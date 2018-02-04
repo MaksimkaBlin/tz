@@ -8,18 +8,19 @@ include "header.php";
             <div class="row margin-vert-30">
 
                 <?php
-                $articles = mysqli_query($connection, "SELECT * FROM `articles` WHERE id=" . (int)$_GET['id']);
-                $article = mysqli_fetch_assoc($articles);
+                $article = mysqli_fetch_assoc(
+                    mysqli_query($connection, "SELECT * FROM `articles` WHERE id=" . (int)$_GET['id']));
+
                 if (isset($_POST['do_post'])) {
                     $errors = array();
-                    if (empty($_POST['name'])) {
+                    if (empty(trim ($_POST['name'])) ){
                         $errors[] = "Введите имя!";
                     }
-                    if (empty($_POST['email'])) {
-                        $errors[] = "Введите Email!";
+                    if (empty(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))) {
+                        $errors[] = "Введите корректный Email!";
                     }
-                    if (empty($_POST['text'] )) {
-                        $errors[] = "Введите комментарий!";
+                    if (empty(trim ($_POST['text']))) {
+                        $errors[] = "Введите текст комментария!";
                     }
                     if (empty($errors)) {
                         $queryResult = mysqli_query($connection, "INSERT INTO comments (author, text, publication_date, article_id, email)
@@ -54,9 +55,9 @@ include "header.php";
                                 <a href="">
                                     <i class="fa fa-comments color-gray-light"></i>
                                     <?php
-                                    $comments = mysqli_query($connection, "SELECT * FROM `comments` WHERE  article_id=" . (int)$article['id']);
-                                    $counter_comments = mysqli_num_rows($comments);
-                                    echo "$counter_comments"; ?> Комментариев
+                                    $commentsResult = mysqli_query($connection, "SELECT * FROM `comments` WHERE  article_id=" . (int)$article['id']);
+                                    $counterComments = mysqli_num_rows($commentsResult);
+                                    echo "$counterComments"; ?> Комментариев
                                 </a>
                             </div>
                             <!-- End # of Comments -->
@@ -65,7 +66,8 @@ include "header.php";
                             <div class="clearfix"></div>
                             <div class="blog-post-body row margin-top-15">
                                 <div class="col-md-5">
-                                    <img class="margin-bottom-20" src="images/<?php echo $article['image']; ?>" alt="image">
+                                    <img class="margin-bottom-20" src="images/<?php echo $article['image']; ?>"
+                                         alt="image">
                                 </div>
                                 <div class="col-md-12">
                                     <p><?php echo $article['text']; ?></p>
@@ -81,8 +83,8 @@ include "header.php";
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <img class="pull-left" src="images/<?php
-                                                    echo !empty($article['author_image'])
-                                                        ? $article['author_image'] : 'default_user.jpg';
+                                                echo !empty($article['author_image'])
+                                                    ? $article['author_image'] : 'default/default_users.png';
                                                 ?>"
                                                      alt="image">
                                             </div>
@@ -100,10 +102,10 @@ include "header.php";
                                     </div>
                                     <ul class="list-group">
                                         <?php
-                                        if ($counter_comments == 0) {
+                                        if ($counterComments == 0) {
                                             echo "<div class=\"col-md-10\"><p>НЕТ КОММЕНТАРИЕВ (((</p></div>";
                                         } else {
-                                            while ($comment = mysqli_fetch_assoc($comments)) {
+                                            while ($comment = mysqli_fetch_assoc($commentsResult)) {
                                                 ?>
                                                 <li class="list-group-item">
                                                     <div class="row">
@@ -112,8 +114,8 @@ include "header.php";
                                                                 <img class="media-object" src="images/<?php
                                                                 echo !empty($article['author_image'])
                                                                     ? $article['author_image']
-                                                                    : 'default_user.jpg';
-                                                                ?>" />
+                                                                    : 'default/default_users.png';
+                                                                ?>"/>
                                                             </a>
                                                         </div>
                                                         <div class="col-md-10">
@@ -141,12 +143,12 @@ include "header.php";
                                                 <div class="row margin-top-20">
                                                     <div class="col-md-12">
                                                         <?php
-                                                        if(isset ($errors)) {
+                                                        if (isset ($errors)) {
                                                             foreach ($errors as $error) {
                                                                 echo $error . "<br>";
                                                             }
                                                             echo "<hr>";
-                                                        }?>
+                                                        } ?>
                                                         <form method="post"
                                                               action="article.php?id=<?php echo $article['id']; ?>#blog-comment-form">
 
@@ -193,43 +195,9 @@ include "header.php";
                 <!-- End Main Column -->
                 <!-- Side Column -->
                 <div class="col-md-3">
-                    <!-- Blog Tags -->
                     <div class="blog-tags">
-                        <h3>Tags</h3>
-                        <ul class="blog-tags">
-                            <li>
-                                <a href="#" class="blog-tag">HTML</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">CSS</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">JavaScript</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">jQuery</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">PHP</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">Ruby</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">CoffeeScript</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">Grunt</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">Bootstrap</a>
-                            </li>
-                            <li>
-                                <a href="#" class="blog-tag">HTML5</a>
-                            </li>
-                        </ul>
                     </div>
-                    <!-- End Blog Tags -->
+
                     <!-- Latest news -->
                     <div class="recent-posts">
                         <h3>Latest news</h3>
@@ -257,8 +225,6 @@ include "header.php";
                                 <?php
                             }
                             ?>
-
-
                         </ul>
                     </div>
                     <!-- End Latest news -->

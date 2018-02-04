@@ -27,16 +27,20 @@
     <link href="http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300" rel="stylesheet" type="text/css">
 </head>
 <body>
+<?php
+$contacts = mysqli_query($connection, "SELECT * FROM `main` ORDER BY id DESC");
+$contact = mysqli_fetch_assoc($contacts);
+?>
 <div id="body-bg">
     <!-- Phone/Email -->
     <div id="pre-header" class="background-gray-lighter">
         <div class="container no-padding">
             <div class="row hidden-xs">
                 <div class="col-sm-6 padding-vert-5">
-                    <strong>Phone:</strong>&nbsp;1-800-123-4567
+                    <strong>Phone:</strong>&nbsp;<?php echo $contact['phone']; ?>
                 </div>
                 <div class="col-sm-6 text-right padding-vert-5">
-                    <strong>Email:</strong>&nbsp;info@joomla51.com
+                    <strong>Email:</strong>&nbsp;<?php echo $contact['mail']; ?>
                 </div>
             </div>
         </div>
@@ -49,7 +53,7 @@
                 <!-- Logo -->
                 <div class="logo">
                     <a href="index.php" title="">
-                        <img src="assets/img/logo.png" alt="Logo" />
+                        <img height="46px" width="444px" src="images/<?php echo $contact['image']; ?>">
                     </a>
                 </div>
                 <!-- End Logo -->

@@ -31,13 +31,17 @@ require "includes/config.php";
 <body>
 
     <!-- Header -->
+    <?php
+    $contacts = mysqli_query($connection, "SELECT * FROM `main` ORDER BY id DESC");
+    $contact = mysqli_fetch_assoc($contacts);
+    ?>
     <div id="header">
         <div class="container">
             <div class="row">
                 <!-- Logo -->
                 <div class="logo">
                     <a href="index.php" title="">
-                        <img src="assets/img/logo.png" alt="Logo" />
+                        <img height="46px" width="444px" src="images/<?php echo $contact['image']; ?>">
                     </a>
                 </div>
                 <!-- End Logo -->

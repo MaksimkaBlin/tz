@@ -9,30 +9,24 @@ include "admin_header.php";
         <?php
         $contactId = isset($_REQUEST['id']) ? $_REQUEST['id'] : null;
 
-        if (isset($_POST['do_post']))
-        {
+        if (isset($_POST['do_post'])) {
             $errors = array();
-            if (empty($_POST['phone']))
-            {
-                $errors[] = "Введите контактный номер телефона!";
+            if (empty(preg_match("/[0-9]/", $_POST['phone']))) {
+                $errors[] = "Введите корректный номер телефона!";
             }
-            if (empty($_POST['mail']))
-            {
+            if (empty(filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL))) {
                 $errors[] = "Введите контактный mail!";
             }
-            if (empty($_POST['Eaddress']))
-            {
+            if (empty(trim ($_POST['Eaddress']))) {
                 $errors[] = "Введите контактный адрес сайта!";
             }
-            if (empty($_POST['address']))
-            {
+            if (empty($_POST['address'])) {
                 $errors[] = "Введите адрес!";
             }
-            if (empty($_POST['info']))
-            {
+            if (empty(trim ($_POST['info']))) {
                 $errors[] = "Введите информацию...!";
             }
-            if (isset($_FILES["contact-img"])){
+            if (isset($_FILES["contact-img"])) {
                 $contactImgTempName = $_FILES["contact-img"]["tmp_name"];
                 $contactImgName = $_FILES["contact-img"]["name"];
                 $uploaddir = "./images/";
@@ -40,44 +34,41 @@ include "admin_header.php";
             } else {
                 $contactImgName = "";
             }
-            if (empty($errors))
-            {
+            if (empty($errors)) {
                 $query = "";
-                if($contactId) {
+                if ($contactId) {
                     if (empty($contactImgName)) {
-                        $query = "UPDATE main SET phone='".$_POST['phone']."',
-                            mail='".$_POST['mail']."',
-                            Eaddress='".$_POST['Eaddress']."',                            
-                            address='".$_POST['address']."',
-                            info='".$_POST['info']."'                                                  
+                        $query = "UPDATE main SET phone='" . $_POST['phone'] . "',
+                            mail='" . $_POST['mail'] . "',
+                            Eaddress='" . $_POST['Eaddress'] . "',                            
+                            address='" . $_POST['address'] . "',
+                            info='" . $_POST['info'] . "'                                                  
                             WHERE id={$contactId}";
                     } else {
-                        $query = "UPDATE main SET phone='".$_POST['phone']."',
-                              mail='".$_POST['mail']."',
-                            Eaddress='".$_POST['Eaddress']."',                            
-                            address='".$_POST['address']."',
-                            info='".$_POST['info']."',
+                        $query = "UPDATE main SET phone='" . $_POST['phone'] . "',
+                              mail='" . $_POST['mail'] . "',
+                            Eaddress='" . $_POST['Eaddress'] . "',                            
+                            address='" . $_POST['address'] . "',
+                            info='" . $_POST['info'] . "',
                              image='" . $contactImgName . "'
                         WHERE id={$contactId}";
                     }
-                    $message = "Данные успешно обновлены <hr>";
                 } else {
+                    $contactImgName = !empty($contactImgName) ? $contactImgName : "default/default_logo.png";
                     $query = "INSERT INTO main (phone, mail, Eaddress, address, info, image)
-                                        VALUES ('".$_POST['phone']."',
-                                                '".$_POST['mail']."',
-                                                '".$_POST['Eaddress']."',                                                
-                                                '".$_POST['address']."',                      
-                                                '".$_POST['info']."',                                         
-                                                '".$contactImgName."')";
-                    $message = "Данные успешно добавлены <hr>";
+                                        VALUES ('" . $_POST['phone'] . "',
+                                                '" . $_POST['mail'] . "',
+                                                '" . $_POST['Eaddress'] . "',                                                
+                                                '" . $_POST['address'] . "',                      
+                                                '" . $_POST['info'] . "',                                         
+                                                '" . $contactImgName . "')";
                 }
                 mysqli_query($connection, $query);
                 header("Location:contacts_page.php");
-                // echo $message;
 
-            }else
-            {
-                if(isset ($errors)) {
+
+            } else {
+                if (isset ($errors)) {
                     foreach ($errors as $error) {
                         echo $error . "<br>";
                     }
@@ -101,14 +92,14 @@ include "admin_header.php";
                 if ($action == 'edit') {
                     ?>
                     <input type="hidden" name="id" value="<?php echo $contactId; ?>">
-                <?php }?>
+                <?php } ?>
                 <?php
                 if ($action == 'edit') {
                     ?>
-                    <input class="form-control" type="text" name="phone" value="<?php echo $contactData['phone']; ?>" >
-                <?php } else {?>
+                    <input class="form-control" type="text" name="phone" value="<?php echo $contactData['phone']; ?>">
+                <?php } else { ?>
                     <input class="form-control" type="text" name="phone">
-                <?php }?>
+                <?php } ?>
             </div>
         </div>
         <label>Адрес электронной почты</label>
@@ -118,14 +109,14 @@ include "admin_header.php";
                 if ($action == 'edit') {
                     ?>
                     <input type="hidden" name="id" value="<?php echo $contactId; ?>">
-                <?php }?>
+                <?php } ?>
                 <?php
                 if ($action == 'edit') {
                     ?>
-                    <input class="form-control" type="text" name="mail" value="<?php echo $contactData['mail']; ?>" >
-                <?php } else {?>
+                    <input class="form-control" type="text" name="mail" value="<?php echo $contactData['mail']; ?>">
+                <?php } else { ?>
                     <input class="form-control" type="text" name="mail">
-                <?php }?>
+                <?php } ?>
             </div>
         </div>
         <label>Электронный адрес</label>
@@ -135,14 +126,15 @@ include "admin_header.php";
                 if ($action == 'edit') {
                     ?>
                     <input type="hidden" name="id" value="<?php echo $contactId; ?>">
-                <?php }?>
+                <?php } ?>
                 <?php
                 if ($action == 'edit') {
                     ?>
-                    <input class="form-control" type="text" name="Eaddress" value="<?php echo $contactData['Eaddress']; ?>" >
-                <?php } else {?>
+                    <input class="form-control" type="text" name="Eaddress"
+                           value="<?php echo $contactData['Eaddress']; ?>">
+                <?php } else { ?>
                     <input class="form-control" type="text" name="Eaddress">
-                <?php }?>
+                <?php } ?>
             </div>
         </div>
         <label>Адрес</label>
@@ -152,14 +144,15 @@ include "admin_header.php";
                 if ($action == 'edit') {
                     ?>
                     <input type="hidden" name="id" value="<?php echo $contactId; ?>">
-                <?php }?>
+                <?php } ?>
                 <?php
                 if ($action == 'edit') {
                     ?>
-                    <input class="form-control" type="text" name="address" value="<?php echo $contactData['address']; ?>" >
-                <?php } else {?>
+                    <input class="form-control" type="text" name="address"
+                           value="<?php echo $contactData['address']; ?>">
+                <?php } else { ?>
                     <input class="form-control" type="text" name="address">
-                <?php }?>
+                <?php } ?>
             </div>
         </div>
         <label>Информация</label>
@@ -169,18 +162,16 @@ include "admin_header.php";
                 if ($action == 'edit') {
                     ?>
                     <input type="hidden" name="id" value="<?php echo $contactId; ?>">
-                <?php }?>
+                <?php } ?>
                 <?php
                 if ($action == 'edit') {
                     ?>
-                    <input class="form-control" type="text" name="info" value="<?php echo $contactData['info']; ?>" >
-                <?php } else {?>
+                    <input class="form-control" type="text" name="info" value="<?php echo $contactData['info']; ?>">
+                <?php } else { ?>
                     <input class="form-control" type="text" name="info">
-                <?php }?>
+                <?php } ?>
             </div>
         </div>
-
-
         <label>Логотип</label>
         <?php
         if ($action == 'edit') {
@@ -188,14 +179,16 @@ include "admin_header.php";
             <div class="row margin-bottom-200">
                 <img src="./images/<?php echo $contactData['image']; ?>"
             </div>
-        <?php }?>
+        <?php } ?>
         <div class="row margin-bottom-20">
             <div class="col-md-7 col-md-offset-0">
                 <input class="form-control" type="file" name="contact-img">
             </div>
         </div>
         <p>
-            <button class="btn btn-primary" type="submit" name ="do_post">Отправить</button>
+            <button class="btn btn-primary" type="submit" name="do_post"><?php
+                include "submit_button_text.php";
+                ?></button>
         </p>
     </form>
     <!-- End Contact Form -->

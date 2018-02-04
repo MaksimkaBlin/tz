@@ -6,11 +6,12 @@ include "admin_header.php";
 <div id="portfolio" class="bottom-border-shadow">
     <div class="container bottom-border">
         <div class="row padding-top-40">
-            <button type="text"><a href="contact_add.php">Создать новые данные</a></button><hr>
+            <button type="text"><a href="contact_add.php">Создать новые данные</a></button>
+            <hr>
             <div class="blog-post padding-bottom-20">
                 <?php
                 $contacts = mysqli_query($connection, "SELECT * FROM `main` ORDER BY id DESC");
-                 if($contacts->num_rows != 0) {
+                if ($contacts->num_rows != 0) {
                     while ($contact = mysqli_fetch_assoc($contacts)) {
                         ?>
                         <!-- Blog Item Body -->
@@ -38,8 +39,10 @@ include "admin_header.php";
                                 <div class="col-md-7">
                                     <p>Информация: <?php echo mb_substr($contact['info'], 0, 200, 'utf-8'); ?></p>
 
-                                    <button type="text"><a href="contact_delete.php?id=<?php echo $contact['id']; ?>">Удалить данные</a></button>
-                                    <button type="text"><a href="contact_add.php?id=<?php echo $contact['id']; ?>">Редактировать данные</a></button>
+                                    <button type="text"><a href="contact_delete.php?id=<?php echo $contact['id']; ?>">Удалить
+                                            данные</a></button>
+                                    <button type="text"><a href="contact_add.php?id=<?php echo $contact['id']; ?>">Редактировать
+                                            данные</a></button>
 
                                 </div>
                             </div>
@@ -48,7 +51,7 @@ include "admin_header.php";
                         <?php
                     }
                 } else {
-                    echo 'Информация не найдена';
+                    echo 'Данные не найдены';
                 }
                 ?>
                 <!-- End Blog Item Header -->

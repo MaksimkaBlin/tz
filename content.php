@@ -3,7 +3,7 @@
     <div class="container no-padding background-white bottom-border">
         <div class="row">
             <!-- Carousel Slideshow -->
-            <div id="carousel-example" class="carousel slide" data-ride="carousel" >
+            <div id="carousel-example" class="carousel slide" data-ride="carousel">
                 <!-- Carousel Indicators -->
                 <ol class="carousel-indicators">
                     <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
@@ -19,20 +19,16 @@
                     $banner = mysqli_fetch_assoc($banners)
                     ?>
                     <div class="item active">
-                        <img src="images/<?php echo $banner['image'];?>">
+                        <img src="images/<?php echo $banner['image']; ?>">
                     </div>
                     <?php
-                    while($banner= mysqli_fetch_assoc($banners))
-                    {
-                    ?>
-
-                    <div class="item">
-                        <img src="images/<?php echo $banner['image'];?>">
-                    </div>
-
-
-                    <?php
-                    }?>
+                    while ($banner = mysqli_fetch_assoc($banners)) {
+                        ?>
+                        <div class="item">
+                            <img src="images/<?php echo $banner['image']; ?>">
+                        </div>
+                        <?php
+                    } ?>
                 </div>
                 <!-- End Carousel Images -->
                 <!-- Carousel Controls -->
@@ -53,27 +49,17 @@
     <div class="container background-white bottom-border">
         <div class="row margin-vert-30">
             <!-- Main Text -->
+            <?php
+            $articles = mysqli_query($connection, "SELECT * FROM `articles` ORDER BY id DESC ");
+            $article = mysqli_fetch_assoc($articles);
+            ?>
             <div class="col-md-6">
-                <h2>Welcome to Habitat</h2>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit
-                    lobortis nisl ut aliquip ex ea commodo consequat.</p>
-                <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit
-                    augue duis dolore te feugait nulla facilisi. Cras non sem sem, at eleifend mi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Curabitur eget nisl
-                    a risus.</p>
+                <h2>Текст самой последней статьи</h2>
+                <h2><?php echo $article['title']; ?></h2>
+                <p><?php echo $article['text']; ?></p>
             </div>
             <!-- End Main Text -->
-            <div class="col-md-6">
-                <h3 class="padding-vert-10">Key Features</h3>
-                <p>Duis sit amet orci et lectus dictum auctor a nec enim. Donec suscipit fringilla elementum. Suspendisse nec justo ut felis ornare tincidunt vitae et lectus.</p>
-                <ul class="tick animate fadeInRight">
-                    <li>Responsive Design</li>
-                    <li>Built with LESS</li>
-                    <li>Font Choosers</li>
-                    <li>Replaceable Background Image</li>
-                    <li>Custom Module Widths</li>
-                    <li>All Module Extensions Included</li>
-                </ul>
-            </div>
+
         </div>
     </div>
 </div>
@@ -86,15 +72,14 @@
                 <?php
                 $categories = mysqli_query($connection, "SELECT * FROM `articles_categories`");
 
-                while($category = mysqli_fetch_assoc($categories))
-                {
+                while ($category = mysqli_fetch_assoc($categories)) {
                     ?>
                     <li class="portfolio-item col-sm-4 col-xs-6 margin-bottom-40">
-                        <a href="categories.php?category=<?php echo $category['id'];?>">
+                        <a href="categories.php?category=<?php echo $category['id']; ?>">
                             <figure class="animate fadeInLeft">
-                                <img alt="image" src="images/<?php echo $category['image'];?>">
+                                <img alt="image" src="images/<?php echo $category['image']; ?>">
                                 <figcaption>
-                                    <h3><?php echo $category['title'];?></h3>
+                                    <h3><?php echo $category['title']; ?></h3>
                                 </figcaption>
                             </figure>
                         </a>

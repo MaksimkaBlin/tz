@@ -3,7 +3,7 @@ include "includes/config.php";
 
 $articleId = $_GET['id'];
 if (isset($articleId)) {
-    
+
     $articlesDeleteQuery = "DELETE FROM articles WHERE id = {$articleId}";
     $articleDeleteResult = mysqli_query($connection, $articlesDeleteQuery);
 }

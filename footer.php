@@ -31,24 +31,27 @@
             </div>
             <!-- End Contact Details -->
             <!-- Sample Menu -->
-            <div class="col-md-4 margin-bottom-20">
-                <h3 class="margin-bottom-10">CATEGORIES</h3>
-                <?php
-                $categories = mysqli_query($connection, "SELECT * FROM `articles_categories`")
-                ?>
-                <ul class="menu">
+            <div id="hornav" class="bottom">
+                <ul id="hornavmenu" class="nav navbar-nav">
+
                     <?php
-                    while($category = mysqli_fetch_assoc($categories))
-                    {
-                        ?>
-                        <li>
-                            <a class="fa-tasks" href="categories.php?category=<?php echo $category['id'];?>"><?php echo $category['title'];?></a>
-                        </li>
-                        <?php
-                    }
+                    $categories = mysqli_query($connection, "SELECT * FROM `articles_categories` ORDER BY id DESC LIMIT 4")
                     ?>
+                    <li>
+                        <span class="fa-font ">Last added categories</span>
+                        <ul>
+                            <?php
+                            while ($category = mysqli_fetch_assoc($categories)) {
+                                ?>
+                                <li>
+                                    <a href="categories.php?category=<?php echo $category['id']; ?>"><?php echo $category['title']; ?></a>
+                                </li>
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                    </li>
                 </ul>
-                <div class="clearfix"></div>
             </div>
             <!-- End Sample Menu -->
         </div>
